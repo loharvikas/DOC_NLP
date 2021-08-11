@@ -29,7 +29,9 @@ javascript.html
 
 # Text Analysis
 
-It uses **spacy** python library to analyze our data.
+It uses **Spacy** python library to analyze our data.
+
+https://spacy.io
 
 ### API ENDPOINT
 
