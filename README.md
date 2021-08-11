@@ -37,6 +37,6 @@ https://spacy.io
 
 https://doc-add-on.herokuapp.com/analyze-text/
 
-### The app is hosted on Heroku app platform.
+### The API is hosted on Heroku app platform.
 
 https://doc-add-on.herokuapp.com/
