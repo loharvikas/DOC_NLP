@@ -1,6 +1,6 @@
 function onInstall() {
+  // this should be in Code.gs
   onOpen();
-  analyzeData("s popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions ofLorem ")
 }
 
 function onOpen(e) {
@@ -40,27 +40,21 @@ function getSelectedText() {
     }
   }
   if (!text.length) throw new Error('Please select some text.');
-  return text;
+  let data = text.toString();
+  return data
 }
 
 
 function analyzeData(text) {
-  let url = "https://33dad1944753.ngrok.io/analyze-text/";
-  let payload = {
-    "data": text
-  }
+  let url = "https://doc-add-on.herokuapp.com/analyze-text/";
   let options= {
     "method": "post",
     "contentType": "application/json",
-    "payload": JSON.stringify(text)
+    "payload": text
   }
-  console.log(payload)
   let response = UrlFetchApp.fetch(url, options)
   let responseContent = response.getContentText();
   let data = JSON.parse(responseContent);
-  console.log(data.data.parts_of_speech)
-  let metrics = data["metrics"]
   return data
  
 }
-

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <!-- The CSS package above applies Google styling to buttons and other elements. -->
+    <!-- This should be in sidebar.html -->
+    <!-- Loads stylesheet.html file -->
+    <?!= HtmlService.createHtmlOutputFromFile('stylesheet').getContent(); ?>
+  </head>
+  <body>
+    <div class="sidebar branding-below">
+      <div class="block" id="button-bar">
+          <div class="btn" id="run-analyze">Analyze Text</div>
+      </div>
+      <form>
+        <div class="block col-contain">
+          <h3 class="header">Metrics</h3>
+            <div class="select">
+          <select>
+              <option value="1" id="noun">Nouns</option>
+          </select>
+        </div>
+         <div class="select">
+          <select>
+              <option value="1" id="adj">Adjective</option>
+          </select>
+        </div>
+         <div class="select">
+          <select>
+              <option value="1" id="pronouns">Pronouns</option>
+          </select>
+        </div>
+         <div class="select">
+          <select>
+              <option value="1" id="verbs">Verbs</option>
+          </select>
+        </div>
+         <div class="select">
+          <select>
+              <option value="1" id="modal">Modal</option>
+          </select>
+        </div>
+        <div class="select">
+          <select>
+              <option value="1" id="stopwords">Stopwords</option>
+          </select>
+        </div>
+          <div class="metrics-container" id="metrics">
+            <div >
+              <label  class="sent-div" id="sent" for="radio-origin-auto"><a href="#">Sentence Count</a></label>
+            </div>
+             <div >
+              <label  class="sent-div" id="wc" for="radio-origin-auto"><a href="#">Word Count</a></label>
+            </div>
+            <div >
+              <label   class="sent-div" id="words_p_s" for="radio-origin-en"><a href="#">Words per sentence</a></label>
+            </div>
+            
+            <div>
+              <label   class="sent-div" id="std" for="radio-origin-fr"><a href="#">STD of words per sentence</a></label>
+            </div>
+            
+            <div>
+              <label  class="sent-div" id="lsr" for="radio-origin-de"><a href="#">Long sentences ratio</a></label>
+            </div>
+
+            <div>
+              <label  class="sent-div" id="ssr" for="radio-origin-ja"><a href="#">Short sentences ratio</a></label>
+            </div>
+
+            <div>
+              <label  class="sent-div" id="vs" for="radio-origin-ja"><a href="#">Vocabulary size</a></label>
+            </div>
+
+            
+            <div>
+              <label  class="sent-div" id="dr" for="radio-origin-ja"><a href="#">Declarative ratio</a></label>
+            </div>
+
+            <div>
+              <label  class="sent-div" id="ir" for="radio-origin-ja"><a href="#">Interrogative ratio</a></label>
+            </div>
+
+            <div>
+              <label  class="sent-div" id="er" for="radio-origin-ja"><a href="#">Exclamative ratio</a></label>
+            </div>
+
+            <div>
+              <label  class="sent-div" id="sr" for="radio-origin-ja"><a href="#">Simple ratio</a></label>
+            </div>
+            
+            <div>
+              <label  class="sent-div" id="cr" for="radio-origin-ja"><a href="#">Complex ratio</a></label>
+            </div>
+            
+            <div>
+              <label  class="sent-div" id="cmr" for="radio-origin-ja"><a href="#">Compound ratio</a></label>
+            </div>
+
+            <div>
+              <label  class="sent-div" id="fr" for="radio-origin-ja"><a href="#">Fragment ratio</a></label>
+            </div>
+            
+            <div>
+              <label  class="sent-div" id="ccr" for="radio-origin-ja"><a href="#">Complex Compound ratio</a></label>
+            </div>
+            
+            <div>
+              <label  class="sent-div" id="mcr" for="radio-origin-ja"><a href="#">Many clauses ratio</a></label>
+            </div>
+
+            <div>
+              <label  class="sent-div" id="lpr" for="radio-origin-ja"><a href="#">Late predicates ratio</a></label>
+            </div>
+
+            <div>
+              <label  class="sent-div" id="dsr" for="radio-origin-ja"><a href="#">Detached Subjects ratio</a></label>
+            </div>
+
+            <div>
+              <label  class="sent-div" id="cpr" for="radio-origin-ja"><a href="#">Clauses per sentence</a></label>
+            </div>
+           
+            <div>
+              <label  class="sent-div" id="cc" for="radio-origin-ja"><a href="#">Character count</a></label>
+            </div>
+           
+            <div>
+              <label  class="sent-div" id="cpw" for="radio-origin-ja"><a href="#">Characters per word</a></label>
+            </div>
+           
+            <div>
+              <label  class="sent-div" id="stpr" for="radio-origin-ja"><a href="#">Stopword ratio</a></label>
+            </div>
+           
+            <div>
+              <label  class="sent-div" id="nr" for="radio-origin-ja"><a href="#">Noun ratio</a></label>
+            </div>
+           
+            <div>
+              <label  class="sent-div" id="pr" for="radio-origin-ja"><a href="#">Pronoun ratio</a></label>
+            </div>
+           
+            <div>
+              <label  class="sent-div" id="vbr" for="radio-origin-ja"><a href="#">Verb ratio</a></label>
+            </div>
+           
+            <div>
+              <label  class="sent-div" id="adjr" for="radio-origin-ja"><a href="#">Adjective ratio</a></label>
+            </div>
+           
+            <div>
+              <label  class="sent-div" id="advr" for="radio-origin-ja"><a href="#">Adverb ratio</a></label>
+            </div>
+           
+            <div>
+              <label  class="sent-div" id="pos" for="radio-origin-ja"><a href="#">Other pos ratio</a></label>
+            </div>
+
+            <div>
+              <label  class="sent-div" id="mdr" for="radio-origin-ja"><a href="#">Modal ratio</a></label>
+            </div>
+           
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- Loads javascript.html file -->
+    <?!= HtmlService.createHtmlOutputFromFile('javascript').getContent(); ?>
+  </body>
+</html>

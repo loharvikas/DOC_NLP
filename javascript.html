@@ -1,0 +1,179 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+  /**
+   * On document load, assign click handlers to each button and try to load the
+   * user's origin and destination language preferences if previously set.
+   */
+  document.getElementById("run-analyze").addEventListener("click", runAnalyze)
+
+  /**
+   * Runs a server-side function to translate the user-selected text and update
+   * the sidebar UI with the resulting translation.
+   */
+  function runAnalyze() {
+    this.disabled = true;
+    $('#error').remove();
+    $(".sent-ans").remove();
+    $(".select-ans").remove();
+    google.script.run
+        .withSuccessHandler(
+          function(text, element) {
+            google.script.run
+            .withSuccessHandler(function(result) {
+              
+              let metrics = result.metrics;
+              let data  = result.data;
+              addMetrics(metrics);
+              addData(data);
+            })
+            .withFailureHandler(
+              function(msg) {
+                  showError(msg, $('#button-bar'));
+              }
+            )
+            .analyzeData(text);
+            element.disabled = false;
+          })
+        .withFailureHandler(
+          function(msg, element) {
+            showError(msg, $('#button-bar'));
+            element.disabled = false;
+          })
+        .withUserObject(this)
+        .getSelectedText();
+  }
+
+  function addMetrics(metrics) {
+    let sentence_count = metrics.sentence_count;
+    let word_count = metrics.word_count;
+    let words_per_sentence = metrics.words_per_sentence;
+    let std_of_words_per_sentence = metrics.std_of_words_per_sentence;
+    let long_sentences_ratio =(Math.round(parseFloat(metrics.long_sentences_ratio)*1000)/10).toString() + ' %'
+    let short_sentences_ratio = (Math.round(parseFloat(metrics.short_sentences_ratio)*1000)/10).toString() + ' %'
+    let vocabulary_size = metrics.vocabulary_size;
+    let declarative_ratio = (Math.round(parseFloat(metrics.declarative_ratio)*1000)/10).toString() + ' %'
+    let interrogative_ratio = (Math.round(parseFloat(metrics.interrogative_ratio)*1000)/10).toString() + ' %'
+    let exclamative_ratio =(Math.round(parseFloat(metrics.exclamative_ratio)*1000)/10).toString() + ' %'
+    let simple_ratio = (Math.round(parseFloat(metrics.simple_ratio)*1000)/10).toString() + ' %'
+    let fragment_ratio = (Math.round(parseFloat(metrics.fragment_ratio)*1000)/10).toString() + ' %'
+    let complex_ratio = (Math.round(parseFloat(metrics.complex_ratio)*1000)/10).toString() + ' %'
+    let compound_ratio = (Math.round(parseFloat(metrics.compound_ratio)*1000)/10).toString() + ' %'
+    let complex_compound_ratio =(Math.round(parseFloat(metrics.complex_compound_ratio)*1000)/10).toString() + ' %'
+    let many_clauses_ratio = (Math.round(parseFloat(metrics.many_clauses_ratio)*1000)/10).toString() + ' %'
+    let late_predicates_ratio = (Math.round(parseFloat(metrics.late_predicates_ratio)*1000)/10).toString() + ' %'
+    let detached_subjects_ratio = (Math.round(parseFloat(metrics.detached_subjects_ratio)*1000)/10).toString() + ' %'
+    let predicate_depth = metrics.predicate_depth;
+    let clauses_per_sentence = metrics.clauses_per_sentence;
+    let character_count = metrics.character_count;
+    let characters_per_word = Math.round(parseFloat(metrics.characters_per_word)*1000)/100;
+    let stopword_ratio =(Math.round(parseFloat(metrics.stopword_ratio)*1000)/10).toString() + ' %';
+    let noun_ratio = (Math.round(parseFloat(metrics.noun_ratio)*1000)/10).toString() + ' %';
+    let pronoun_ratio = (Math.round(parseFloat(metrics.pronoun_ratio)*1000)/10).toString() + ' %';
+    let verb_ratio = (Math.round(parseFloat(metrics.verb_ratio)*1000)/10).toString() + ' %';
+    let adjective_ratio = (Math.round(parseFloat(metrics.adjective_ratio)*1000)/10).toString() + ' %';
+    let adverb_ratio = (Math.round(parseFloat(metrics.adverb_ratio)*1000)/10).toString() + ' %';
+    let other_pos_ratio = (Math.round(parseFloat(metrics.other_pos_ratio)*1000)/10).toString() + ' %';
+    let modal_ratio = (Math.round(parseFloat(metrics.modal_ratio)*1000)/10).toString() + ' %'
+
+    addMetricsData(sentence_count, $("#sent"));
+    addMetricsData(word_count, $("#wc"));
+    addMetricsData(words_per_sentence, $("#words_p_s"));
+    addMetricsData(std_of_words_per_sentence, $("#std"));
+    addMetricsData(long_sentences_ratio , $("#lsr"));
+    addMetricsData(short_sentences_ratio, $("#ssr"));
+    addMetricsData(vocabulary_size , $("#vs"));
+    addMetricsData(declarative_ratio, $("#dr"));
+    addMetricsData(interrogative_ratio , $("#ir"));
+    addMetricsData(exclamative_ratio, $("#er"));
+    addMetricsData(simple_ratio, $("#sr"));
+    addMetricsData(fragment_ratio, $("#fr"));
+    addMetricsData(complex_ratio , $("#cr"));
+    addMetricsData(compound_ratio, $("#cmr"));
+    addMetricsData(complex_compound_ratio, $("#ccr"));
+    addMetricsData(many_clauses_ratio, $("#mcr"));
+    addMetricsData(late_predicates_ratio, $("#lpr"));
+    addMetricsData(detached_subjects_ratio, $("#dsr"));
+    addMetricsData(predicate_depth, $("#pdr"));
+    addMetricsData(clauses_per_sentence, $("#cpr"));
+    addMetricsData(character_count, $("#cc"));
+    addMetricsData(characters_per_word , $("#cpw"));
+    addMetricsData(stopword_ratio, $("#stpr"));
+    addMetricsData(noun_ratio, $("#nr"));
+    addMetricsData(verb_ratio, $("#vbr"));
+    addMetricsData(adverb_ratio, $("#advr"));
+    addMetricsData(adjective_ratio, $("#adjr"));
+    addMetricsData(pronoun_ratio, $("#pr"));
+    addMetricsData(other_pos_ratio, $("#pos"));
+    addMetricsData(modal_ratio, $("#mdr"));
+  }
+
+  function addData(data) {
+    let values = data.values
+    let parts_of_speech = data.parts_of_speech;
+    let stopwords = data.stopwords;
+    addPOS(parts_of_speech, values);
+    addStopwords(values, stopwords, $("#stopwords"))
+  }
+
+  function addStopwords(values, stopwords, element) {
+    let mapStopwords = new Set();
+    for(let i=0; i < stopwords.length; i++) {
+      if(!mapStopwords.has(values[i])) {
+        if(stopwords[i]) {
+          let div = $('<option>' + values[i] + '</option>');
+          $(element).after(div);
+          mapStopwords.add(values[i])
+        }
+      }
+    }
+    
+  }
+
+  function addPOS(pos, values) {
+    addPosInDOM(pos, values, ["NN"], $("#noun")); // Nouns
+    addPosInDOM(pos, values, ["JJ"], $("#adj")); // Adjective
+    addPosInDOM(pos, values, ["PR", "WP", "EX"], $("#pronouns")); // Pronouns
+    addPosInDOM(pos, values, ["VB", "MD"], $("#verbs")); // Adjective 
+    addPosInDOM(pos, values, ["MD"], $("#modal")); // Modal
+  }
+
+
+
+  function addMetricsData(data, element) {
+    let div = $('<label id="metrics-result" class="sent-ans">' + data + '</label>');
+    $(element).after(div);
+  }
+
+  function addPosInDOM(pos, values, labels, element) {
+    let mapPos = [];
+    for(let i=0; i<pos.length; i++) {
+      let pos_label = pos[i].slice(0, 2);
+      if(labels.includes(pos_label)) {
+        mapPos.push(i);
+      }
+    }
+
+    let pos_label = new Set()
+    for(let i=0; i < mapPos.length; i++) {
+        if(!pos_label.has(values[mapPos[i]])) {
+          let div = $('<option class="select-ans">' + values[mapPos[i]] + '</option>');
+          $(element).after(div);
+          pos_label.add(values[mapPos[i]]);
+        }
+    }
+  }
+
+  /**
+ 
+  /**
+   * Inserts a div that contains an error message after a given element.
+   *
+   * @param {string} msg The error message to display.
+   * @param {DOMElement} element The element after which to display the error.
+   */
+
+  function showError(msg, element) {
+    var div = $('<label id="error" class="error inline">' + msg + '</label>');
+    $(element).after(div);
+  }
+</script>
