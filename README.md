@@ -25,7 +25,7 @@ javascript.html
 
 * The initial request may take some time or may not even successfully processed. Because inactivity on server might cause it to reboot.
 
-* This add-on will only be available for the document you used to create the script.(Won't be able to use for every document.)
+* This add-on will only be available for the document you used to create the script.(Won't be available for every document.)
 
 # Text Analysis
 
